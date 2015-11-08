@@ -1,0 +1,24 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Division By Zero",
+    "longName": "Miner speed",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "Miner speed",
+    "targetPlatforms": [
+        "aplite",
+        "basalt",
+        "chalk"
+    ],
+    "uuid": "5c35b424-6358-40c8-96c8-d3982c66a33a",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
