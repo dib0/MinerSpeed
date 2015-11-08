@@ -7,7 +7,14 @@
     "longName": "Miner speed",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/Minecraft.png",
+                "menuIcon": true,
+                "name": "AppIcon",
+                "type": "png"
+            }
+        ]
     },
     "sdkVersion": "3",
     "shortName": "Miner speed",
