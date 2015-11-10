@@ -4,7 +4,7 @@
         ""
     ],
     "companyName": "Division By Zero",
-    "longName": "Miner speed",
+    "longName": "Miner statistics",
     "projectType": "native",
     "resources": {
         "media": [
@@ -17,7 +17,7 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "Miner speed",
+    "shortName": "Miner stats",
     "targetPlatforms": [
         "basalt",
         "chalk"

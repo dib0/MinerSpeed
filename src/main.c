@@ -14,7 +14,6 @@ enum {
   MINER_KEY_BALANCE = 0x1,
 };
 
-
 static void send_to_phone() {
   DictionaryIterator *iter;
   app_message_outbox_begin(&iter);
@@ -106,7 +105,7 @@ void handle_init(void) {
   text_layer_set_text_color(balance_layer, GColorFromRGB(0, 210, 0));
   text_layer_set_text(balance_layer, "Loading...");
 
-  time_layer = text_layer_create(GRect(0, 10, 180, 20));
+  time_layer = text_layer_create(GRect(0, 10, 150, 20));
   text_layer_set_text_alignment(time_layer, GTextAlignmentCenter);
   text_layer_set_text_color(time_layer, GColorFromRGB(150, 150, 150));
   
