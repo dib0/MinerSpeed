@@ -1,42 +1,37 @@
-// We use the fake "PBL" symbol as default
-var defaultSymbol = "PBL";
-var symbol = defaultSymbol;
+function trimTrailingChars(s, charToTrim)
+{
+  var regExp = new RegExp(charToTrim + "+$");
+  var result = s.replace(regExp, "");
 
-// Fetch stock data for a given stock symbol (NYSE or NASDAQ only) from markitondemand.com
-// & send the stock price back to the watch via app message
-// API documentation at http://dev.markitondemand.com/#doc
-function fetchStockQuote(symbol, isInitMsg) {
+  return result;
+}
+
+// The miner stats from NiceHash and send this to the Pebble app
+function fetchMinerStats() {
   var response;
   var req = new XMLHttpRequest();
   // build the GET request
-  req.open('GET', "http://dev.markitondemand.com/Api/Quote/json?" +
-    "symbol=" + symbol, true);
+  req.open('GET', "https://www.nicehash.com/api?method=stats.provider&location=0&addr=1DjTgkpwV11kLwv7synNtiL1zT4vpEpw2q", true);
   req.onload = function(e) {
     if (req.readyState == 4) {
       // 200 - HTTP OK
       if(req.status == 200) {
         console.log(req.responseText);
         response = JSON.parse(req.responseText);
-        var price;
-        if (response.Message) {
-          // the markitondemand API sends a response with a Message
-          // field when the symbol is not found
-          Pebble.sendAppMessage({
-            "price": "Not Found"});
-        }
-        if (response.Data) {
-          // data found, look for LastPrice
-          price = response.Data.LastPrice;
-          console.log(price);
+        var speed;
+        var balance;
 
-          var msg = {};
-          if (isInitMsg) {
-            msg.init = true;
-            msg.symbol = symbol;
-          }
-          msg.price = "$" + price.toString();
-          Pebble.sendAppMessage(msg);
+        if (response.result.stats[0]) {
+          // data found, look for LastPrice
+          speed = trimTrailingChars(response.result.stats[0].accepted_speed, '0');
+          balance = response.result.stats[0].balance;
+          console.log("Speed: " + speed);
+          console.log("Balance: " + balance);
+
+          Pebble.sendAppMessage({ '0': speed, '1': balance });
         }
+        else
+          console.log("Response data wasn't set.");
       } else {
         console.log("Request returned error code " + req.status.toString());
       }
@@ -47,32 +42,18 @@ function fetchStockQuote(symbol, isInitMsg) {
 
 // Set callback for the app ready event
 Pebble.addEventListener("ready", function(e) {
-  console.log("connect! " + e.ready);
-  console.log(e.type);
+  console.log("connect!");
+
+  // TODO: Bitcoin address from local storage
   // Fetch saved symbol from local storage (using
   // standard localStorage webAPI)
-  symbol = localStorage.getItem("symbol");
-  if (!symbol) {
-    symbol = "PBL";
-  }
-  var isInitMsg = true;
-  fetchStockQuote(symbol, isInitMsg);
+//  baddr = localStorage.getItem("baddr");
+  fetchMinerStats();
 });
 
 // Set callback for appmessage events
 Pebble.addEventListener("appmessage", function(e) {
   console.log("message");
-  var isInitMsg;
-  if (e.payload.init) {
-    isInitMsg = true;
-    fetchStockQuote(symbol, isInitMsg);
-  } else if (e.payload.fetch) {
-    isInitMsg = false;
-    fetchStockQuote(symbol, isInitMsg);
-  } else if (e.payload.symbol) {
-    symbol = e.payload.symbol;
-    localStorage.setItem("symbol", symbol);
-    isInitMsg = false;
-    fetchStockQuote(symbol, isInitMsg);
-  }
+
+  fetchMinerStats();
 });
