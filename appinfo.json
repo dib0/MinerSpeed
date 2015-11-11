@@ -1,10 +1,13 @@
 {
-    "appKeys": {},
+    "appKeys": {
+        "balance": 0,
+        "speed": 0
+    },
     "capabilities": [
         ""
     ],
     "companyName": "Division By Zero",
-    "longName": "Miner statistics",
+    "longName": "Miner speed",
     "projectType": "native",
     "resources": {
         "media": [
@@ -17,12 +20,12 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "Miner stats",
+    "shortName": "Miner speed",
     "targetPlatforms": [
         "basalt",
         "chalk"
     ],
-    "uuid": "5c35b424-6358-40c8-96c8-d3982c66a33a",
+    "uuid": "e99aad43-ea89-4743-836a-75c3dc952cc7",
     "versionLabel": "1.0",
     "watchapp": {
         "watchface": false

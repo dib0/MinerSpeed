@@ -28,6 +28,9 @@ function fetchMinerStats() {
           console.log("Speed: " + speed);
           console.log("Balance: " + balance);
 
+          var msg={};
+          msg.speed = speed;
+          msg.balance = balance;
           Pebble.sendAppMessage({ '0': speed, '1': balance });
         }
         else

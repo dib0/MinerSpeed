@@ -8,6 +8,7 @@ TextLayer *balance_layer;
 TextLayer *balancelabel_layer;
 TextLayer *time_layer;
 static char s_time_buffer[16];
+static int timer=0;
 
 enum {
   MINER_KEY_SPEED = 0x0,
@@ -30,8 +31,8 @@ static void in_received_handler(DictionaryIterator *iter, void *context) {
   Tuple *speed_tuple = dict_find(iter, MINER_KEY_SPEED);
   Tuple *balance_tuple = dict_find(iter, MINER_KEY_BALANCE);
   
-  APP_LOG(APP_LOG_LEVEL_DEBUG, speed_tuple->value->cstring);
-  APP_LOG(APP_LOG_LEVEL_DEBUG, balance_tuple->value->cstring);
+  //APP_LOG(APP_LOG_LEVEL_DEBUG, speed_tuple->value->cstring);
+  //APP_LOG(APP_LOG_LEVEL_DEBUG, balance_tuple->value->cstring);
   text_layer_set_text(speed_layer, speed_tuple->value->cstring);
   text_layer_set_text(balance_layer, balance_tuple->value->cstring);
 }
@@ -70,6 +71,16 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   }
 
   text_layer_set_text(time_layer, s_time_buffer);
+  
+  // Refresh every 15 minutes
+  timer++;
+  if (timer > 14)
+  {
+    timer = 0;
+    
+    // refresh
+    load_data();
+  }
 }
 
 void handle_init(void) {
