@@ -7,6 +7,7 @@ TextLayer *speedlabel_layer;
 TextLayer *balance_layer;
 TextLayer *balancelabel_layer;
 TextLayer *time_layer;
+TextLayer *cpright_layer;
 static char s_time_buffer[16];
 static int timer=0;
 
@@ -130,6 +131,11 @@ void handle_init(void) {
   text_layer_set_text_alignment(time_layer, GTextAlignmentCenter);
   text_layer_set_text_color(time_layer, GColorFromRGB(150, 150, 150));
   
+  cpright_layer = text_layer_create(GRect(0, 150, 150, 20));
+  text_layer_set_text_alignment(cpright_layer, GTextAlignmentCenter);
+  text_layer_set_text_color(cpright_layer, GColorFromRGB(75, 75, 75));
+  text_layer_set_text(cpright_layer, "Division by Zero (2015)");
+  
   // Set background (comment for testing visibility)
   text_layer_set_background_color(time_layer, GColorFromRGB(35, 35, 35));
   text_layer_set_background_color(text_layer, GColorFromRGB(35, 35, 35));
@@ -137,6 +143,7 @@ void handle_init(void) {
   text_layer_set_background_color(speed_layer, GColorFromRGB(35, 35, 35));
   text_layer_set_background_color(balancelabel_layer, GColorFromRGB(35, 35, 35));
   text_layer_set_background_color(balance_layer, GColorFromRGB(35, 35, 35));
+  text_layer_set_background_color(cpright_layer, GColorFromRGB(35, 35, 35));
   
   layer_add_child(window_get_root_layer(my_window), text_layer_get_layer(time_layer));
   layer_add_child(window_get_root_layer(my_window), text_layer_get_layer(text_layer));
@@ -144,6 +151,7 @@ void handle_init(void) {
   layer_add_child(window_get_root_layer(my_window), text_layer_get_layer(speed_layer));
   layer_add_child(window_get_root_layer(my_window), text_layer_get_layer(balancelabel_layer));
   layer_add_child(window_get_root_layer(my_window), text_layer_get_layer(balance_layer));
+  layer_add_child(window_get_root_layer(my_window), text_layer_get_layer(cpright_layer));
   
   window_stack_push(my_window, true);
   
