@@ -1,10 +1,11 @@
 {
     "appKeys": {
-        "balance": 0,
+        "balance": 1,
+        "bitcoinaddr": 2,
         "speed": 0
     },
     "capabilities": [
-        ""
+        "configurable"
     ],
     "companyName": "Division By Zero",
     "longName": "Miner speed",

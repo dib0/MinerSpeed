@@ -8,10 +8,14 @@ function trimTrailingChars(s, charToTrim)
 
 // The miner stats from NiceHash and send this to the Pebble app
 function fetchMinerStats() {
+  var addr = localStorage.getItem("bitcoinaddr");
+  if (addr === null)
+    return;
+  
   var response;
   var req = new XMLHttpRequest();
   // build the GET request
-  req.open('GET', "https://www.nicehash.com/api?method=stats.provider&location=0&addr=1DjTgkpwV11kLwv7synNtiL1zT4vpEpw2q", true);
+  req.open('GET', "https://www.nicehash.com/api?method=stats.provider&location=0&addr="+addr, true);
   req.onload = function(e) {
     if (req.readyState == 4) {
       // 200 - HTTP OK
@@ -31,7 +35,7 @@ function fetchMinerStats() {
           var msg={};
           msg.speed = speed;
           msg.balance = balance;
-          Pebble.sendAppMessage({ '0': speed, '1': balance });
+          Pebble.sendAppMessage(msg);
         }
         else
           console.log("Response data wasn't set.");

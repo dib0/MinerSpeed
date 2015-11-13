@@ -13,6 +13,7 @@ static int timer=0;
 enum {
   MINER_KEY_SPEED = 0x0,
   MINER_KEY_BALANCE = 0x1,
+  MINER_KEY_BITCOINADDR = 0x2,
 };
 
 static void send_to_phone() {
@@ -27,25 +28,34 @@ static void send_to_phone() {
   app_message_outbox_send();
 }
 
-static void in_received_handler(DictionaryIterator *iter, void *context) {
-  Tuple *speed_tuple = dict_find(iter, MINER_KEY_SPEED);
-  Tuple *balance_tuple = dict_find(iter, MINER_KEY_BALANCE);
-  
-  //APP_LOG(APP_LOG_LEVEL_DEBUG, speed_tuple->value->cstring);
-  //APP_LOG(APP_LOG_LEVEL_DEBUG, balance_tuple->value->cstring);
-  text_layer_set_text(speed_layer, speed_tuple->value->cstring);
-  text_layer_set_text(balance_layer, balance_tuple->value->cstring);
-}
-
-static void in_dropped_handler(AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Dropped!");
-}
-
 static void load_data()
 {
   text_layer_set_text(speed_layer, "Loading...");
   text_layer_set_text(balance_layer, "Loading...");
   send_to_phone();
+}
+
+static void in_received_handler(DictionaryIterator *iter, void *context) {
+  Tuple *speed_tuple = dict_find(iter, MINER_KEY_SPEED);
+  Tuple *balance_tuple = dict_find(iter, MINER_KEY_BALANCE);
+  Tuple *address_tuple = dict_find(iter, MINER_KEY_BITCOINADDR);
+  
+  if (address_tuple) {
+    // Config was set, refresh  
+    load_data();
+  }
+  else {
+    //APP_LOG(APP_LOG_LEVEL_DEBUG, speed_tuple->value->cstring);
+    //APP_LOG(APP_LOG_LEVEL_DEBUG, balance_tuple->value->cstring);
+    text_layer_set_text(speed_layer, speed_tuple->value->cstring);
+    text_layer_set_text(balance_layer, balance_tuple->value->cstring);
+  }
+}
+
+static void in_dropped_handler(AppMessageResult reason, void *context) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Dropped!");
+  // refresh
+  load_data();
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
